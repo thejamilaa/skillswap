@@ -13,7 +13,7 @@ export default async function SwapsPage() {
   if (!user) return null
 
   // Fetch all swaps for user
-  const { data: swaps, error } = await supabase
+  const { data, error } = await supabase
     .from('swap_requests')
     .select(`
       id, status, message, created_at, sender_id, receiver_id, credits_frozen,
@@ -23,6 +23,8 @@ export default async function SwapsPage() {
     `)
     .or(`sender_id.eq.${user.id},receiver_id.eq.${user.id}`)
     .order('created_at', { ascending: false })
+
+  const swaps = data as any[]
 
   if (error) {
     console.error(error)

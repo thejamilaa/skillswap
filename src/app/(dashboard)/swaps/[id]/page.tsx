@@ -12,7 +12,7 @@ export default async function SwapWorkspacePage({ params }: { params: { id: stri
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return redirect('/login')
 
-  const { data: swap, error } = await supabase
+  const { data, error } = await supabase
     .from('swap_requests')
     .select(`
       id, status, sender_id, receiver_id, requested_skill_id,
@@ -22,6 +22,8 @@ export default async function SwapWorkspacePage({ params }: { params: { id: stri
     `)
     .eq('id', params.id)
     .single()
+
+  const swap = data as any
 
   if (error || !swap) {
     return <div className="p-8 text-center text-red-500">So'rov topilmadi yoki xatolik yuz berdi.</div>

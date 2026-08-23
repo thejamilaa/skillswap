@@ -42,7 +42,13 @@ const buttonVariants = cva(
 
 import * as React from "react"
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonPrimitive.Props & VariantProps<typeof buttonVariants>>(
+export interface ButtonProps
+  extends React.ComponentPropsWithoutRef<typeof ButtonPrimitive>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+}
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = "default", size = "default", ...props }, ref) => {
     return (
       <ButtonPrimitive

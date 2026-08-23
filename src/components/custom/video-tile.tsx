@@ -3,8 +3,8 @@ import { useVideoTrack, useAudioTrack } from '@daily-co/daily-react'
 import { useEffect, useRef } from 'react'
 
 export function VideoTile({ sessionId, isLocal }: { sessionId: string, isLocal?: boolean }) {
-  const videoState = useVideoTrack(sessionId)
-  const audioState = useAudioTrack(sessionId)
+  const videoState = useVideoTrack(sessionId) as any
+  const audioState = useAudioTrack(sessionId) as any
   const videoRef = useRef<HTMLVideoElement>(null)
   const audioRef = useRef<HTMLAudioElement>(null)
 
