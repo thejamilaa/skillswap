@@ -4,16 +4,13 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
+import { headers } from 'next/headers'
+
 const getSiteUrl = () => {
-  let url =
-    process.env.NEXT_PUBLIC_SITE_URL ?? // Localhost or manual override
-    process.env.NEXT_PUBLIC_VERCEL_URL ??
-    process.env.VERCEL_URL ?? // Vercel system variable
-    'http://localhost:3000'
-  
-  // Make sure to include `https://` when not localhost.
-  url = url.startsWith('http') ? url : `https://${url}`
-  return url
+  // NEXT_PUBLIC_SITE_URL must be set in Vercel environment variables
+  // For local dev: http://localhost:3000
+  // For production: https://skillswap-jamila.vercel.app
+  return process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 }
 
 export async function login(formData: FormData) {

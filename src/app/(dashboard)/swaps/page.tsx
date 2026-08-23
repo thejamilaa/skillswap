@@ -35,10 +35,10 @@ export default async function SwapsPage() {
   const activeSwaps = swaps?.filter(s => s.status === 'accepted' || s.status === 'active') || []
 
   return (
-    <div className="space-y-12">
-      <div className="flex flex-col gap-2">
-        <h1 className="text-2xl font-bold tracking-tight text-[var(--neu-text)]">Almashuvlar paneli</h1>
-        <p className="text-sm text-[var(--neu-subtle-text)]">Bu yerda sizning barcha darslaringiz va so'rovlaringiz ko'rsatiladi.</p>
+    <div className="space-y-8">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--neu-text)]">Almashuvlar paneli</h1>
+        <p className="text-sm text-[var(--neu-subtle-text)]">Bu yerda sizning barcha darslaringiz va so&apos;rovlaringiz ko&apos;rsatiladi.</p>
       </div>
 
       {/* Incoming Requests */}

@@ -5,8 +5,7 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  // Kirgandan keyin qaysi sahifaga o'tish (default: /dashboard)
-  const next = searchParams.get("next") ?? "/dashboard";
+  const next = searchParams.get("next") ?? "/discover";
 
   if (code) {
     const cookieStore = cookies();
@@ -35,8 +34,9 @@ export async function GET(request: Request) {
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`);
     }
+    console.error("Auth callback error:", error);
+    return NextResponse.redirect(`${origin}/login?message=${encodeURIComponent(error.message)}`);
   }
 
-  // Xatolik bo'lsa kirish sahifasiga qaytarish
   return NextResponse.redirect(`${origin}/login?error=auth-code-error`);
 }
