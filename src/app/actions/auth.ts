@@ -4,7 +4,17 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 
-const getSiteUrl = () => process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+const getSiteUrl = () => {
+  let url =
+    process.env.NEXT_PUBLIC_SITE_URL ?? // Localhost or manual override
+    process.env.NEXT_PUBLIC_VERCEL_URL ??
+    process.env.VERCEL_URL ?? // Vercel system variable
+    'http://localhost:3000'
+  
+  // Make sure to include `https://` when not localhost.
+  url = url.startsWith('http') ? url : `https://${url}`
+  return url
+}
 
 export async function login(formData: FormData) {
   const supabase = createClient()
