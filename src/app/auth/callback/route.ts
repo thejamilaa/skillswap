@@ -14,8 +14,12 @@ export async function GET(request: Request) {
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`)
     }
+    
+    // Xatolikni log qilib qo'yish
+    console.error("Auth callback error:", error)
+    return NextResponse.redirect(`${origin}/login?message=${encodeURIComponent(error.message)}`)
   }
 
   // Agar xato bo'lsa yoki kod yaroqsiz bo'lsa
-  return NextResponse.redirect(`${origin}/login?message=Pochtani tasdiqlashda xatolik yuz berdi`)
+  return NextResponse.redirect(`${origin}/login?message=Kodni tasdiqlashda xatolik`)
 }
