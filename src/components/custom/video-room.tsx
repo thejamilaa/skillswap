@@ -14,7 +14,7 @@ export function VideoRoom({ swapId, userName }: { swapId: string, userName: stri
         <h2 className="text-2xl font-bold mb-2 text-[var(--neu-text)]">Video dars xonasi</h2>
         <p className="text-[var(--neu-subtle-text)] mb-8 max-w-md">Ushbu xona faqat siz va sherigingiz uchun ajratilgan. Darsni boshlash uchun quyidagi tugmani bosing.</p>
         <Button size="lg" onClick={() => setJoined(true)} className="bg-emerald-600 dark:bg-emerald-600 hover:bg-emerald-700 dark:hover:bg-emerald-700 text-white dark:text-white border-transparent px-8 h-12 text-lg rounded-full font-semibold">
-          Kamerani yoqish va Qo'shilish
+          Kamerani yoqish va Qo&apos;shilish
         </Button>
       </div>
     )

@@ -41,7 +41,7 @@ export function VideoTile({ sessionId, isLocal }: { sessionId: string, isLocal?:
       
       {!videoState.videoTrack && (
         <div className="absolute inset-0 flex items-center justify-center bg-slate-900 text-slate-400">
-          Kamera o'chirilgan
+          Kamera o&apos;chirilgan
         </div>
       )}
       
