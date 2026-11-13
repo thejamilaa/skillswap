@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
+import { uploadToR2 } from '@/lib/r2'
 
 export async function updateProfile(formData: FormData) {
   const supabase = createClient()
@@ -22,19 +23,25 @@ export async function updateProfile(formData: FormData) {
 
   let avatar_url = undefined
 
-  // Agar rasm yuklangan bo'lsa, uni Storage'ga saqlaymiz
+  // Agar rasm yuklangan bo'lsa, Cloudflare R2 (yoki fallback sifatida Supabase Storage)'ga saqlaymiz
   if (avatarFile && avatarFile.size > 0) {
-    const fileExt = avatarFile.name.split('.').pop()
-    const fileName = `${user.id}-${Math.random().toString(36).substring(2, 15)}.${fileExt}`
-    
-    const { error: uploadError } = await supabase.storage
-      .from('avatars')
-      .upload(fileName, avatarFile)
+    if (process.env.CLOUDFLARE_R2_ACCOUNT_ID) {
+      const uploadResult = await uploadToR2(avatarFile, 'avatars')
+      if (uploadResult.error) return { error: uploadResult.error }
+      avatar_url = uploadResult.url
+    } else {
+      const fileExt = avatarFile.name.split('.').pop()
+      const fileName = `${user.id}-${Math.random().toString(36).substring(2, 15)}.${fileExt}`
+      
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, avatarFile)
 
-    if (uploadError) return { error: 'Rasm yuklashda xatolik: ' + uploadError.message }
+      if (uploadError) return { error: 'Rasm yuklashda xatolik: ' + uploadError.message }
 
-    const { data } = supabase.storage.from('avatars').getPublicUrl(fileName)
-    avatar_url = data.publicUrl
+      const { data } = supabase.storage.from('avatars').getPublicUrl(fileName)
+      avatar_url = data.publicUrl
+    }
   }
 
   // Update profile basic info
